@@ -75,16 +75,13 @@ class TasksController extends Controller
     {   
         $task = Task::find($id);
 
+        if ($task->user_id !== \Auth::id()) {
+            return redirect('/');
+        }
+
         return view('tasks.show', [
             'task' => $task,
         ]);
-        
-        if (\Auth::id() === $task->user_id) {
-          $task->delete();
-          
-        }else {
-           return redirect('/');
-        }
     }
 
     /**
@@ -97,6 +94,10 @@ class TasksController extends Controller
     {   
             
         $task = Task::find($id);
+        
+        if ($task->user_id !== \Auth::id()) {
+            return redirect('/');
+        }
 
         return view('tasks.edit', [
             'task' => $task,
